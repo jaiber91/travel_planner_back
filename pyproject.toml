@@ -1,0 +1,38 @@
+[project]
+name = "travel_crew_backend"
+version = "0.1.0"
+description = "travel_crew_backend using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    # crewai >=1.14 es necesario para el parametro Agent(apps=...) y las
+    # integraciones de la Plataforma (Tools & Integrations / Google Calendar).
+    "crewai[tools]>=1.14.5,<2.0.0",
+    # ddgs: motor de busqueda usado por custom_tool.py (NO lo arrastra crewai[tools]).
+    "ddgs>=9.0.0",
+    # API web (main.py)
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
+    "python-dotenv>=1.0.0",
+    "agentops>=0.4.21",
+    "tavily-python>=0.5.0",
+]
+
+[project.scripts]
+travel_crew_backend = "travel_crew_backend.main:run"
+run_crew = "travel_crew_backend.main:run"
+train = "travel_crew_backend.main:train"
+replay = "travel_crew_backend.main:replay"
+test = "travel_crew_backend.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# El paquete vive en src/ y NO coincide con el nombre del proyecto
+# (travel_crew_backend), por eso hatchling necesita la ruta explicita.
+[tool.hatch.build.targets.wheel]
+packages = ["src/backend_proyecto_planificador_de_viajes"]
+
+[tool.crewai]
+type = "crew"

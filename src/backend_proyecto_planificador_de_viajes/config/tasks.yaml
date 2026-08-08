@@ -1,0 +1,58 @@
+task_cultura:
+  description: >
+    Investiga y haz una lista de al menos 5 atracciones culturales y actividades imperdibles basadas en la petición: "{trip_request}". 
+    Para cada una, proporciona una breve descripción y por qué es relevante.
+  expected_output: >
+    'Una lista con viñetas de atracciones culturales con sus descripciones.'
+  agent: agente_experto_cultural
+
+task_gastronomia:
+  description: >
+    Busca y recomienda 5 experiencias gastronómicas que no se pueden perder, alineadas con la petición: "{trip_request}". 
+    Incluye una mezcla de restaurantes y comida local auténtica.
+  expected_output: >
+    'Un listado de 5 recomendaciones de comida, cada una con una justificación de por qué es una visita obligada.'
+  agent: agente_gourmet_local
+
+task_logistica:
+  description: >
+    Encuentra opciones de vuelos (si aplica) y al menos 3 sugerencias de alojamiento (hoteles, Airbnb, etc.) que se ajusten a la petición: "{trip_request}". 
+    Considera presupuesto y ubicación.
+  expected_output: >
+    'Un resumen de opciones de vuelos y una lista de 3 sugerencias de alojamiento con sus pros y contras.'
+  agent: agente_logistica
+
+task_itinerario:
+  description: >
+    Usando la información de las tareas de cultura, gastronomía y logística, crea un itinerario completo y estructurado día por día. 
+    Asegúrate de que el flujo sea lógico y que los tiempos sean realistas.
+  expected_output: >
+    'Un itinerario detallado en formato Markdown, organizado por días, que incluya actividades, comidas y notas de logística.'
+  agent: agente_planificador_itinerario
+
+task_agenda:
+  description: >
+    Registra el viaje en el Google Calendar del usuario a partir del itinerario día por día ya elaborado.
+    La fecha de HOY es {fecha_actual}; úsala como referencia para resolver cualquier fecha relativa (ej: "el próximo mes").
+    Extrae las fechas exactas del viaje desde la petición original: "{trip_request}".
+
+    Crea UN evento de Google Calendar por CADA día del viaje usando la herramienta de crear evento (google_calendar/create_event):
+      - Título: "Día N — <ciudad o tema principal del día>".
+      - Fecha de inicio y fin: el día correspondiente (evento de día completo o con horario de mañana a noche).
+      - Descripción: el plan de ESE día resumido (mañana, tarde y noche: actividades culturales, comidas recomendadas y notas de logística).
+
+    REGLAS:
+      - Si en la petición NO hay fechas claras, NO inventes ninguna: no crees eventos y reporta que faltan las fechas del viaje.
+      - No crees eventos duplicados: un solo evento por día.
+  expected_output: >
+    'Una confirmación que liste cada evento creado (fecha y título), o un aviso claro si faltaron las fechas del viaje.'
+  agent: agente_agenda
+
+task_redaccion_final:
+  description: >
+    Toma el itinerario detallado y re-escríbelo en un formato narrativo y atractivo. 
+    Comienza con una introducción emocionante, luego resume el plan de manera legible y concluye con algunos consejos para el viajero. 
+    El tono debe ser inspirador y amigable.
+  expected_output: >
+    'Un texto final en formato Markdown, bellamente redactado, que presente el plan de viaje completo de una manera cautivadora.'
+  agent: agente_redactor_viajes
