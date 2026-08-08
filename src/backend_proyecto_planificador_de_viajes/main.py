@@ -1,6 +1,7 @@
 # src/travel_crew_backend/main.py
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
 from datetime import date
@@ -15,6 +16,17 @@ app = FastAPI(
     title="API del Asistente de Viajes",
     description="Una API para planificar itinerarios de viaje personalizados usando un equipo de agentes de IA (CrewAI).",
     version="1.0.0"
+)
+
+# --- CORS ---
+# Permite peticiones desde cualquier origen.
+# En producción puedes restringirlo a tu dominio del frontend:
+#   allow_origins=["https://tu-frontend.vercel.app"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 class TripRequest(BaseModel):
